@@ -1,0 +1,37 @@
+#!/bin/sh
+
+# toggl-invoicer
+# A wrapper script for invoking toggl-invoicer with docker
+# put this script in you $PATH as toggl-invoicer, and edit the docker volumes as appropriate.
+# I use Dropbox for my invoices and config file, but you can use whatever you prefer
+
+INVOICE_DIR=$HOME/Dropbox/Documents/Invoices/Toggl
+CONFIG_FILE=$HOME/Dropbox/etc/toggl-invoicer/config.ini
+
+die() {
+    echo $@ >&2
+    exit 1
+}
+
+check_cmd_in_path(){
+    cmd=$1
+    which $cmd > /dev/null 2>&1 || error 1 "$cmd not found!"
+}
+
+if [ ! -f "$CONFIG_FILE" ]; then
+    die "Config file $CONFIG_FILE not found"
+fi
+
+if [ ! -d "$INVOICE_DIR" ]; then 
+    mkdir -p "$INVOICE_DIR"
+fi
+
+check_cmd_in_path docker
+
+docker run \
+    --rm \
+    --tty \
+    --interactive \
+    --volume "$CONFIG_FILE":/app/config/config.ini \
+    --volume "$INVOICE_DIR":"$INVOICE_DIR" \
+    toggl-invoicer:latest /app/bin/toggl-invoicer "$@" --invoice-dir "$INVOICE_DIR"

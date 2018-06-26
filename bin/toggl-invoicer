@@ -1,0 +1,7 @@
+#!/usr/bin/env perl
+
+use Path::Tiny 'path';
+use lib path(__FILE__)->parent(2)->child('lib')->stringify;
+use App::TogglInvoicer::Command;
+
+App::TogglInvoicer::Command->new_with_command->run;

@@ -1,0 +1,5 @@
+.git/
+local/
+invoices/
+vendor/cache/
+bin/toggl-invoicer-wrapper

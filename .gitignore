@@ -1,0 +1,46 @@
+local/
+invoices/
+vendor/cache/
+
+### LaTeX ###
+## Core latex/pdflatex auxiliary files:
+*.aux
+*.lof
+*.log
+*.lot
+*.fls
+*.out
+*.toc
+*.fmt
+*.fot
+*.cb
+*.cb2
+.*.lb
+*.pdf
+
+## Intermediate documents:
+*.dvi
+*.xdv
+*-converted-to.*
+
+# endnotes
+*.ent
+
+# glossaries
+*.acn
+*.acr
+*.glg
+*.glo
+*.gls
+*.glsdefs
+
+# pax
+*.pax
+
+# pdfpcnotes
+*.pdfpc
+
+# TikZ & PGF
+*.dpth
+*.md5
+*.auxlock
