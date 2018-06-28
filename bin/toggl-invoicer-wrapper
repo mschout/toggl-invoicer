@@ -34,4 +34,4 @@ docker run \
     --interactive \
     --volume "$CONFIG_FILE":/app/config/config.ini \
     --volume "$INVOICE_DIR":"$INVOICE_DIR" \
-    toggl-invoicer:latest /app/bin/toggl-invoicer "$@" --invoice-dir "$INVOICE_DIR"
+    mschout/toggl-invoicer:latest /app/bin/toggl-invoicer "$@" --invoice-dir "$INVOICE_DIR"
