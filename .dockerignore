@@ -3,3 +3,5 @@ local/
 invoices/
 vendor/cache/
 bin/toggl-invoicer-wrapper
+README.md
+LICENSE
