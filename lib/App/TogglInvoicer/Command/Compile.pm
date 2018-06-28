@@ -10,7 +10,7 @@ use LaTeX::Driver;
 
 extends 'App::TogglInvoicer::Command';
 
-option invoice_number => (
+parameter invoice_number => (
     is            => 'ro',
     isa           => 'Int',
     required      => 1,
@@ -58,7 +58,7 @@ __END__
 
 =head1 SYNOPSIS
 
- toggl-invoicer --invoice-dir path/to/invoices --invoice-number 2018003
+ toggl-invoicer compile --invoice-dir path/to/invoices 2018003
 
 =head1 DESCRIPTION
 
