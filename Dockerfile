@@ -9,5 +9,5 @@ RUN apt-get update && \
 COPY . /app
 WORKDIR /app
 ENV PERL5LIB /app/local/lib/perl5
-RUN ./vendor/bin/carton install && rm -rf $HOME/.cpanm
+RUN ./vendor/bin/carton install && rm -rf $HOME/.cpanm && rm -rf vendor
 
