@@ -6,7 +6,7 @@ use App::TogglInvoicer::Boilerplate;
 use DateTime::Duration;
 use DateTime::Format::Duration;
 
-requires qw(start end seconds);
+requires qw(seconds);
 
 has duration => (is => 'lazy', isa => 'DateTime::Duration');
 
