@@ -6,3 +6,4 @@ bin/toggl-invoicer-wrapper
 README.md
 LICENSE
 Dockerfile
+Makefile
