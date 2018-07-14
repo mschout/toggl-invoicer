@@ -136,14 +136,17 @@ United States
 \rowcolors{2}{gray!10}{white}
 \begin{longtable}[t]{L{.25in}p{4.25in}R{.75in}}
   \noalign{\vskip 2mm}\textbf{\#} & \textbf{Description} & \textbf{Minutes} \\ \hline
-  [%- FOREACH task IN tasks -%]
+  [%- FOREACH item IN line_items -%]
     \refstepcounter{pos}\thepos &
-    [%- IF task.project -%]
-      \taskproj{[% task.project | latex_encode %]}
+    [%- IF item.project -%]
+      \taskproj{[% item.project | latex_encode %]}
     [%- END -%]
-    \taskdesc{[% task.description | latex_encode  %]}\newline
-    \datetime{[% task.start.strftime('%B %d, %Y %H:%M') %] - [% task.end.strftime('%H:%M') %]}
-    & [% task.minutes %] \\ \hdashline[1pt/1pt]
+    \taskdesc{[% item.description | latex_encode %]}\newline
+    \datetime{[% item.start.strftime('%B %d, %Y %H:%M') %] - [% item.end.strftime('%H:%M') %]}
+    [%- IF item.tasks.size > 1 -%]
+      ([% item.tasks.size %] time entries)
+    [%- END -%]
+    & [% item.minutes %] \\ \hdashline[1pt/1pt]
   [%- END -%]
 
   \rowcolor{white}\multicolumn{2}{r}{\bf Total Minutes:} & {\bf [% total.minutes | format_number %]} \\

@@ -5,8 +5,10 @@ use MooseX::AttributeShortcuts;
 use strictures 2;
 
 use App::TogglInvoicer::Boilerplate;
+use App::TogglInvoicer::LineItem;
 use App::TogglInvoicer::Task;
 use DateTime;
+use Hash::Ordered;
 use List::Util 'sum';
 use Math::Currency 'Money';
 use Path::Tiny 'path';
@@ -49,13 +51,15 @@ has [qw(since until)] => (is => 'lazy', isa => 'DateTime');
 
 has [qw(toggl_key client_name)] => (is => 'lazy', isa => 'Str');
 
-has tasks => (is => 'ro', isa => 'ArrayRef', default => sub { [] });
+has line_items => (is => 'lazy', isa => 'ArrayRef[App::TogglInvoicer::LineItem]');
 
 has total_hours => (is => 'lazy', isa => 'Num');
 
 has total_minutes => (is => 'lazy', isa => 'Int');
 
 has toggl => (is => 'lazy', isa => 'WebService::Toggl');
+
+has toggl_report => (is => 'lazy', isa => 'ArrayRef[HashRef]');
 
 has template => (is => 'lazy', isa => 'Template');
 
@@ -73,25 +77,7 @@ method run () {
         return $self->show_clients;
     }
 
-    my $ws = $self->toggl;
-
-    my $report = $self->toggl->details({
-        workspace_id => $self->workspace,
-        since        => $self->since,
-        until        => $self->until});
-
     my $client_name = $self->client_name;
-
-    for my $entry (grep { $_->{client} eq $client_name } $report->data->@*) {
-        next if $entry->{dur} < 60000; # discard tasks < 1 minute long
-
-        push $self->tasks->@*, App::TogglInvoicer::Task->new(
-            duration    => int($entry->{dur} / 1000),
-            start       => $entry->{start},
-            end         => $entry->{end},
-            description => $entry->{description},
-            project     => $entry->{project});
-    }
 
     my $tt = $self->template;
 
@@ -99,7 +85,7 @@ method run () {
     my $client_details = $self->config->{'client '.$self->client} || {};
 
     my %vars = (
-        tasks         => $self->tasks,
+        line_items     => $self->line_items,
         hourly_rate    => Money($self->hourly_rate),
         amount_due     => $amount_due,
         invoice_num    => $self->invoice_number,
@@ -121,15 +107,13 @@ method run () {
 }
 
 method show_workspaces () {
-    my $me = $self->toggl->me;
-
     say 'No workspace specified.';
     say 'You can set the workspace in ', $self->config_file, ' or, use --workspace=id';
     say '';
     say 'Available workspaces: ';
     say '';
 
-    for my $ws ($me->workspaces->all) {
+    for my $ws ($self->toggl->me->workspaces->all) {
         say join(': ', $ws->id, $ws->name);
     }
 
@@ -137,8 +121,6 @@ method show_workspaces () {
 }
 
 method show_clients () {
-    my $me = $self->toggl->me;
-
     say 'No Client ID specified.';
 
     say 'You can set the client ID in ', $self->config_file, ' or, use --client=id';
@@ -146,11 +128,29 @@ method show_clients () {
     say 'Available clients: ';
     say '';
 
-    for my $client ($me->clients->all) {
+    for my $client ($self->toggl->me->clients->all) {
         say join(': ', $client->id, $client->name);
     }
 
     return;
+}
+
+method _combine_tasks ($tasklist) {
+    my @out;
+
+    my $tasks = Hash::Ordered->new;
+
+    for my $item (@$tasklist) {
+        my $key = join ' ', $item->start->strftime('%Y%m%d'), $item->project, $item->description;
+
+        unless ($tasks->exists($key)) {
+            $tasks->set($key, []);
+        }
+
+        push $tasks->get($key)->@*, $item;
+    }
+
+    return $tasks->values;
 }
 
 method _build_client_name () {
@@ -163,6 +163,60 @@ method _build_client_name () {
 
 method _build_month () {
     DateTime->today->strftime('%Y-%m');
+}
+
+method _build_toggl_report () {
+    my $pages;
+    my $page = 0;
+
+    my @report;
+
+    do {
+        $page += 1;
+
+        my $current_page = $self->toggl->details({
+            workspace_id => $self->workspace,
+            since        => $self->since,
+            until        => $self->until,
+            page         => $page});
+
+        push @report, $current_page->data->@*;
+
+        $pages //= POSIX::ceil($current_page->total_count / $current_page->per_page);
+    } until ($page == $pages);
+
+    # Toggl API has a order_desc parameter to specify the ordering, but
+    # WebService::Toggl does not support it.  work around by sorting manually
+    return [sort { $a->{start} cmp $b->{start} } @report];
+}
+
+method _build_line_items () {
+    my $report = $self->toggl_report;
+
+    my $client_name = $self->client_name;
+
+    my @tasks;
+    for my $entry (grep { $_->{client} eq $client_name } $report->@*) {
+        next if $entry->{dur} < 60000; # discard tasks < 1 minute long
+
+        push @tasks, App::TogglInvoicer::Task->new(
+            duration    => int($entry->{dur} / 1000),
+            start       => $entry->{start},
+            end         => $entry->{end},
+            description => $entry->{description},
+            project     => $entry->{project});
+    }
+
+    my @line_items;
+
+    for my $tasks ($self->_combine_tasks(\@tasks)) {
+        push @line_items, App::TogglInvoicer::LineItem->new(
+            project     => $tasks->[0]->project,
+            description => $tasks->[0]->description,
+            tasks       => $tasks);
+    }
+
+    return \@line_items;
 }
 
 method _build_since () {
@@ -201,9 +255,9 @@ method _build_total_hours () {
 }
 
 method _build_total_minutes () {
-    my $total = sum map { $_->minutes } $self->tasks->@*;
+    my $total_seconds = sum map { $_->duration } $self->line_items->@*;
 
-    return $total;
+    return int($total_seconds / 60);
 }
 
 method _build_template () {
