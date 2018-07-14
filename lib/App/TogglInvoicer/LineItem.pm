@@ -15,7 +15,7 @@ has tasks => (
 
 has [qw(start end)] => (is => 'lazy', isa => 'DateTime');
 
-has duration => (is => 'lazy', isa => 'Int');
+has seconds => (is => 'lazy', isa => 'Int');
 
 with 'App::TogglInvoicer::Role::Times';
 
@@ -27,8 +27,8 @@ method _build_end () {
     $self->tasks->[-1]->end;
 }
 
-method _build_duration () {
-    sum map { $_->duration } $self->tasks->@*;
+method _build_seconds () {
+    sum map { $_->seconds } $self->tasks->@*;
 }
 
 __PACKAGE__->meta->make_immutable;

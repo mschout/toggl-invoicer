@@ -10,7 +10,7 @@ has project => (is => 'ro', isa => 'Str');
 
 has description => (is => 'ro', isa => 'Str', required => 1);
 
-has duration => (is => 'ro', isa => 'Int', required => 1);
+has seconds => (is => 'ro', isa => 'Int', required => 1);
 
 has [qw(start end)] => (is => 'ro', isa => DateTime, required => 1, coerce => 1);
 

@@ -200,7 +200,7 @@ method _build_line_items () {
         next if $entry->{dur} < 60000; # discard tasks < 1 minute long
 
         push @tasks, App::TogglInvoicer::Task->new(
-            duration    => int($entry->{dur} / 1000),
+            seconds     => int($entry->{dur} / 1000),
             start       => $entry->{start},
             end         => $entry->{end},
             description => $entry->{description},
@@ -255,7 +255,7 @@ method _build_total_hours () {
 }
 
 method _build_total_minutes () {
-    my $total_seconds = sum map { $_->duration } $self->line_items->@*;
+    my $total_seconds = sum map { $_->seconds } $self->line_items->@*;
 
     return int($total_seconds / 60);
 }
