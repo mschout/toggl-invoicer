@@ -1,5 +1,5 @@
 PREFIX ?= /usr/local
-VERSION = "v0.0.1"
+VERSION = "v0.1.0"
 DOCKER_IMAGE = mschout/toggl-invoicer
 
 all: install
