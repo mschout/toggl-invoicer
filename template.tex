@@ -57,8 +57,8 @@
 \definecolor{lightgray}{HTML}{777777}
 \colorlet{lighttext}{lightgray}
 
-\newcommand*{\datetime}[1]{\footnotesize\vspace{0.75em}\color{lighttext} #1}
-\newcommand*{\taskdesc}[1]{\color{lighttext} #1}
+\newcommand*{\datetime}[1]{\footnotesize\vspace{0.35em}\color{lighttext} #1}
+\newcommand*{\taskdesc}[1]{\small\color{lighttext} #1}
 \newcommand*{\taskproj}[1]{\textbf{#1}\newline}
 
 % Defines writer's email (optional)
@@ -135,24 +135,39 @@ United States
 
 \rowcolors{2}{gray!10}{white}
 \begin{longtable}[t]{L{.25in}p{4.25in}R{.75in}}
-  \noalign{\vskip 2mm}\textbf{\#} & \textbf{Description} & \textbf{Minutes} \\ \hline
+  \noalign{\vskip 2mm}\textbf{\#} & \textbf{Description} & \textbf{Hours} \\ \hline
   [%- FOREACH item IN line_items -%]
+    % the invoice line number
     \refstepcounter{pos}\thepos &
     [%- IF item.project -%]
       \taskproj{[% item.project | latex_encode %]}
     [%- END -%]
     \taskdesc{[% item.description | latex_encode %]}\newline
-    \datetime{[% item.start.strftime('%B %d, %Y %H:%M') %] - [% item.end.strftime('%H:%M') %]}
-    [%- IF item.tasks.size > 1 -%]
-      ([% item.tasks.size %] time entries)
-    [%- END -%]
-    & [% item.minutes %] \\ \hdashline[1pt/1pt]
+    \datetime{
+      [% item.start.strftime('%B %d, %Y %H:%M') %] - [% item.end.strftime('%H:%M') %]
+      [%- IF item.tasks.size > 1 -%]
+        ([% item.tasks.size %] time entries totaling [% item.hms %])
+      [%- ELSE -%]
+        ([% item.hms %])
+      [%- END -%]
+    }
+    & [% item.hours %] \\ \hdashline[1pt/1pt]
   [%- END -%]
 
-  \rowcolor{white}\multicolumn{2}{r}{\bf Total Minutes:} & {\bf [% total.minutes | format_number %]} \\
-  \rowcolor{white}\multicolumn{2}{r}{\bf Total Hours:} & {\bf [% total.hours | format_number %]} \\
+  % other items available under total are:
+  % total.hours - float (seconds / 3600)
+  % total.minutes - int - total minutes worked (seconds / 60)
+  % total.seconds - int - total seconds worked
+  % \rowcolor{white}\multicolumn{2}{r}{\bf Total Minutes:} & {\bf [% total.minutes | format_number %]} \\
+  \rowcolor{white}\multicolumn{2}{r}{\bf Total Hours:} & {\bf [% total.hours %]} \\
   \rowcolor{white}\multicolumn{2}{r}{\bf Hourly Rate:} & {\bf [% hourly_rate | latex_encode  %]} \\
   \rowcolor{white}\multicolumn{2}{r}{\bf Balance Due:} & {\bf [% amount_due | latex_encode %]} \\
 \end{longtable}
+
+% Example notes section
+%{\bf Notes}
+%\begin{itemize}
+%  \item Off on July 4 -- US Holiday
+%\end{itemize}
 
 \end{document}
