@@ -925,14 +925,13 @@ DISTRIBUTIONS
       File::HomeDir::Windows 1.004
     requirements:
       Carp 0
-      Cwd 3
+      Cwd 3.12
       ExtUtils::MakeMaker 0
       File::Basename 0
       File::Path 2.01
-      File::Spec 3
+      File::Spec 3.12
       File::Temp 0.19
       File::Which 0.05
-      Mac::SystemDirectory 0.04
       POSIX 0
       perl 5.008003
   File-Listing-6.04
@@ -1151,6 +1150,18 @@ DISTRIBUTIONS
     requirements:
       ExtUtils::MakeMaker 0
       perl 5.008001
+  Hash-Ordered-0.012
+    pathname: D/DA/DAGOLDEN/Hash-Ordered-0.012.tar.gz
+    provides:
+      Hash::Ordered 0.012
+    requirements:
+      Carp 0
+      ExtUtils::MakeMaker 6.17
+      constant 0
+      overload 0
+      perl 5.008
+      strict 0
+      warnings 0
   IO-HTML-1.001
     pathname: C/CJ/CJM/IO-HTML-1.001.tar.gz
     provides:
@@ -1174,6 +1185,7 @@ DISTRIBUTIONS
       IO::Socket::SSL::Utils 2.014
     requirements:
       ExtUtils::MakeMaker 0
+      Mozilla::CA 0
       Net::SSLeay 1.46
       Scalar::Util 0
   IPC-System-Simple-1.25
@@ -1307,17 +1319,6 @@ DISTRIBUTIONS
     requirements:
       ExtUtils::MakeMaker 0
       perl 5.006
-  Mac-SystemDirectory-0.10
-    pathname: E/ET/ETHER/Mac-SystemDirectory-0.10.tar.gz
-    provides:
-      Mac::SystemDirectory 0.10
-    requirements:
-      Exporter 0
-      ExtUtils::MakeMaker 0
-      XSLoader 0
-      perl 5.006
-      strict 0
-      warnings 0
   Math-Currency-0.52
     pathname: M/MS/MSCHOUT/Math-Currency-0.52.tar.gz
     provides:
@@ -2152,6 +2153,14 @@ DISTRIBUTIONS
       perl 5.006
       strict 0
       warnings 0
+  Mozilla-CA-20180117
+    pathname: A/AB/ABH/Mozilla-CA-20180117.tar.gz
+    provides:
+      Mozilla::CA 20180117
+    requirements:
+      ExtUtils::MakeMaker 0
+      Test 0
+      perl 5.006
   Net-HTTP-6.18
     pathname: O/OA/OALDERS/Net-HTTP-6.18.tar.gz
     provides:
