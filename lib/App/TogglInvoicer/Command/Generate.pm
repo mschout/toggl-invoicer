@@ -53,15 +53,15 @@ has [qw(toggl_key client_name)] => (is => 'lazy', isa => 'Str');
 
 has line_items => (is => 'lazy', isa => 'ArrayRef[App::TogglInvoicer::LineItem]');
 
-has total_hours => (is => 'lazy', isa => 'Num');
-
-has total_minutes => (is => 'lazy', isa => 'Int');
+has seconds => (is => 'lazy', isa => 'Int');
 
 has toggl => (is => 'lazy', isa => 'WebService::Toggl');
 
 has toggl_report => (is => 'lazy', isa => 'ArrayRef[HashRef]');
 
 has template => (is => 'lazy', isa => 'Template');
+
+with 'App::TogglInvoicer::Role::Times';
 
 method run () {
     unless (defined $self->hourly_rate) {
@@ -81,7 +81,7 @@ method run () {
 
     my $tt = $self->template;
 
-    my $amount_due = Money($self->hourly_rate) * $self->total_hours;
+    my $amount_due = Money($self->hourly_rate) * $self->hours;
     my $client_details = $self->config->{'client '.$self->client} || {};
 
     my %vars = (
@@ -94,8 +94,10 @@ method run () {
         client_country => $client_details->{country},
         client_email   => $client_details->{email},
         total          => {
-            minutes => $self->total_minutes,
-            hours   => $self->total_hours
+            seconds => $self->seconds,
+            minutes => $self->minutes,
+            hours   => $self->hours,
+            hms     => $self->hms
         }
     );
 
@@ -250,14 +252,8 @@ method _build_hourly_rate () {
     $self->config->{_}{hourly_rate};
 }
 
-method _build_total_hours () {
-    sprintf '%.02f', $self->total_minutes / 60;
-}
-
-method _build_total_minutes () {
-    my $total_seconds = sum map { $_->seconds } $self->line_items->@*;
-
-    return int($total_seconds / 60);
+method _build_seconds () {
+    sum map { $_->seconds } $self->line_items->@*;
 }
 
 method _build_template () {
