@@ -1,6 +1,7 @@
 requires 'Config::INI', 0;
 requires 'DateTime', 0;
 requires 'DateTime::Format::ISO8601', 0;
+requires 'DateTime::Format::Duration';
 requires 'File::HomeDir', 0;
 requires 'Function::Parameters', 0;
 requires 'HTTP::Request::Common', 0;
