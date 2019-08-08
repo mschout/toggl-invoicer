@@ -58,7 +58,7 @@
 \colorlet{lighttext}{lightgray}
 
 \newcommand*{\datetime}[1]{\footnotesize\vspace{0.35em}\color{lighttext} #1}
-\newcommand*{\taskdesc}[1]{\small\color{lighttext} #1}
+\newcommand*{\taskdesc}[1]{\small\color{lighttext} #1\newline}
 \newcommand*{\taskproj}[1]{\textbf{#1}\newline}
 
 % Defines writer's email (optional)
@@ -142,7 +142,9 @@ United States
     [%- IF item.project -%]
       \taskproj{[% item.project | latex_encode %]}
     [%- END -%]
-    \taskdesc{[% item.description | latex_encode %]}\newline
+    [%- IF item.description -%]
+    \taskdesc{[% item.description | latex_encode %]}
+    [%- END -%]
     \datetime{
       [% item.start.strftime('%B %d, %Y %H:%M') %] - [% item.end.strftime('%H:%M') %]
       [%- IF item.tasks.size > 1 -%]
