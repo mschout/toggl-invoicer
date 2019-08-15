@@ -4,9 +4,19 @@
 # A wrapper script for invoking toggl-invoicer with docker
 # put this script in you $PATH as toggl-invoicer, and edit the docker volumes as appropriate.
 # I use Dropbox for my invoices and config file, but you can use whatever you prefer
+if [ -z "$INVOICE_DIR" ]; then
+    INVOICE_DIR=$HOME/Dropbox/Documents/Invoices/Toggl
+fi
 
-INVOICE_DIR=$HOME/Dropbox/Documents/Invoices/Toggl
-CONFIG_FILE=$HOME/Dropbox/etc/toggl-invoicer/config.ini
+if [ -z "$CONFIG_FILE" ]; then
+    CONFIG_FILE=$HOME/Dropbox/etc/toggl-invoicer/config.ini
+fi
+
+# if TOGGL_INVOICE_TEMPLATE is set, and it is a path t a file, mount it as the
+# template in the container
+if [ ! -z "$TOGGL_INVOICE_TEMPLATE" ] && [ -f "$TOGGL_INVOICE_TEMPLATE" ]; then
+    INVOICE_VOLUME_MOUNT="--volume ""$TOGGL_INVOICE_TEMPLATE"":/app/template.tex"
+fi
 
 die() {
     echo $@ >&2
@@ -34,4 +44,5 @@ docker run \
     --interactive \
     --volume "$CONFIG_FILE":/app/config/config.ini \
     --volume "$INVOICE_DIR":"$INVOICE_DIR" \
+    $INVOICE_VOLUME_MOUNT \
     mschout/toggl-invoicer:latest /app/bin/toggl-invoicer "$@" --invoice-dir "$INVOICE_DIR"

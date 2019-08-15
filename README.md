@@ -48,6 +48,32 @@ here assumes the wrapper script is in use.
 
 All commands include a ```--help``` option that explains their usage.
 
+## Environment Variables
+
+The wrapper script recognizes the following Environment Variables:
+
+### `TOGGL_INVOICE_TEMPLATE`
+
+If set and is the path to a file, this will be used as the XeLaTeX template
+that your invoice will be generated from, instead of `template.tex` from this
+distribution.
+
+E.g.:
+
+```
+TOGGL_INVOICE_TEMPLATE=$HOME/etc/toggl/custom-template.tex
+```
+
+### `CONFIG_FILE`
+
+The path to `config.ini` on your system.
+
+### `INVOICE_DIR`
+
+The path where invoices will ge stored.
+
+## Example Usage
+
 ### Generate a new invoice for the current month
 
 ```
