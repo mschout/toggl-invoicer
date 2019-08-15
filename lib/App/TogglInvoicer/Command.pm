@@ -1,6 +1,7 @@
 package App::TogglInvoicer::Command;
 
 use MooseX::App;
+use MooseX::App::Utils;
 use MooseX::AttributeShortcuts;
 use strictures 2;
 
@@ -20,6 +21,12 @@ option invoice_dir => (
 has [qw(config_file top_dir output_dir)] => (is => 'lazy', isa => 'Str');
 
 has config => (is => 'lazy', isa => 'HashRef');
+
+app_command_name {
+    my $command = MooseX::App::Utils::class_to_command(@_);
+
+    return $command =~ s/_/-/gr;
+};
 
 method _build_config_file () {
     my $file = path($self->top_dir)->child('config/config.ini');
