@@ -13,9 +13,10 @@ use List::Util 'sum';
 use Math::Currency 'Money';
 use Path::Tiny 'path';
 use Template;
-use WebService::Toggl;
 
 extends 'App::TogglInvoicer::Command';
+
+with 'App::TogglInvoicer::Role::Toggl';
 
 option invoice_number => (
     is            => 'lazy',
@@ -49,13 +50,11 @@ parameter month => (
 
 has [qw(since until)] => (is => 'lazy', isa => 'DateTime');
 
-has [qw(toggl_key client_name)] => (is => 'lazy', isa => 'Str');
+has client_name => (is => 'lazy', isa => 'Str');
 
 has line_items => (is => 'lazy', isa => 'ArrayRef[App::TogglInvoicer::LineItem]');
 
 has seconds => (is => 'lazy', isa => 'Int');
-
-has toggl => (is => 'lazy', isa => 'WebService::Toggl');
 
 has toggl_report => (is => 'lazy', isa => 'ArrayRef[HashRef]');
 
@@ -232,17 +231,6 @@ method _build_until () {
     my $since = $self->since;
 
     DateTime->last_day_of_month(year => $since->year, month => $since->month);
-}
-
-method _build_toggl_key () {
-    my $key = $self->config->{toggl}{api_key}
-        or Carp::croak 'toggl.api_key is not set in ', $self->config_file;
-
-    return $key;
-}
-
-method _build_toggl () {
-    WebService::Toggl->new({api_key => $self->toggl_key});
 }
 
 method _build_workspace () {
