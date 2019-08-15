@@ -4,7 +4,7 @@ RUN apt-get update && \
     apt-get -y install \
         texlive-latex-base \
         texlive-xetex \
-    && apt-get clean all
+    && rm -rf /var/apt/cache/*
 
 # copy cpanfile and snapshot to the app first so that other code changes do not
 # bust the docker cache
