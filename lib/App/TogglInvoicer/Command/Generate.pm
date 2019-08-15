@@ -85,6 +85,7 @@ method run () {
     my $client_details = $self->config->{'client '.$self->client} || {};
 
     my %vars = (
+        personal       => $self->config->{personal},
         line_items     => $self->line_items,
         hourly_rate    => Money($self->hourly_rate),
         amount_due     => $amount_due,

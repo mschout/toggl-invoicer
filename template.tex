@@ -96,7 +96,7 @@
 %--------------------------------
 \hypersetup
 {
-  pdfauthor={Michael Schout},
+  pdfauthor={[% personal.name | latex_encode %]},
   pdfsubject=Invoice Nr. [% invoice_num %],
   pdftitle=Invoice Nr. [% invoice_num %],
   linkcolor=black,
@@ -110,14 +110,20 @@
 \begin{document}
 
 % person providing the invoice
-\hfil{\Huge\bf Michael Schout}\hfil
+\hfil{\Huge\bf [% personal.name | latex_encode %]}\hfil
 \bigskip
 \break
 \hrule
 
-10826 Cox Ln \hfill \mobile{214-282-7057} \\
-Dallas, Texas 75229 \hfill \email{schoutm@gmail.com} \\
-United States
+\begin{minipage}[t]{0.5\textwidth}
+[% FOREACH address_line IN personal.address %]
+[% address_line | latex_encode ~%][% UNLESS loop.last %] \\[% END ~%]
+[%~ END %]
+\end{minipage}%
+\begin{minipage}[t]{0.5\textwidth}
+  \hfill \mobile{[% personal.phone | latex_encode %]} \\
+  \hfill \email{[% personal.email | latex_encode %]}
+\end{minipage}
 
 \section*{Invoice}
 
