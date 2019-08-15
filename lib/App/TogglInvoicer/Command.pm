@@ -32,7 +32,22 @@ method _build_config_file () {
 }
 
 method _build_config () {
-    Config::INI::Reader->read_file($self->config_file);
+    my $config = Config::INI::Reader->read_file($self->config_file);
+
+    # address lines might be multiple lines, but INI files require one value per line.
+    # We handle this by rolling all of the address_1, address_2, ... address_N
+    # values lines into an arrayref as just "address"
+    unless (defined $config->{personal}{address}) {
+        my @address_lines = map { delete $config->{personal}{$_} }
+            sort grep { /^address_[0-9]+$/ } keys $config->{personal}->%*;
+        $config->{personal}{address} = \@address_lines;
+    }
+    else {
+        # convert single line addres to arrayref
+        $config->{personal}{address} = [ $config->{personal}{address} ];
+    }
+
+    return $config;
 }
 
 method _build_client () {
