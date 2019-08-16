@@ -242,7 +242,9 @@ method _build_hourly_rate () {
 }
 
 method _build_seconds () {
-    sum map { $_->seconds } $self->line_items->@*;
+    my @line_items = $self->line_items->@* or return 0;
+
+    sum map { $_->seconds } @line_items
 }
 
 method _build_template () {
