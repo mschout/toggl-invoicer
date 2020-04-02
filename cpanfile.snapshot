@@ -158,6 +158,12 @@ DISTRIBUTIONS
       Class::Singleton 1.5
     requirements:
       ExtUtils::MakeMaker 0
+  Clone-0.43
+    pathname: A/AT/ATOOMIC/Clone-0.43.tar.gz
+    provides:
+      Clone 0.43
+    requirements:
+      ExtUtils::MakeMaker 0
   Config-Any-0.32
     pathname: H/HA/HAARG/Config-Any-0.32.tar.gz
     provides:
@@ -293,6 +299,23 @@ DISTRIBUTIONS
       strict 0
       warnings 0
       warnings::register 0
+  DateTime-Event-ICal-0.13
+    pathname: F/FG/FGLOCK/DateTime-Event-ICal-0.13.tar.gz
+    provides:
+      DateTime::Event::ICal 0.13
+    requirements:
+      DateTime 0
+      DateTime::Event::Recurrence 0.11
+      ExtUtils::MakeMaker 0
+  DateTime-Event-Recurrence-0.19
+    pathname: F/FG/FGLOCK/DateTime-Event-Recurrence-0.19.tar.gz
+    provides:
+      DateTime::Event::Recurrence 0.19
+      DateTime::Set::ICal 0.19
+    requirements:
+      DateTime 0.27
+      DateTime::Set 0.3600
+      ExtUtils::MakeMaker 0
   DateTime-Format-Builder-0.81
     pathname: D/DR/DROLSKY/DateTime-Format-Builder-0.81.tar.gz
     provides:
@@ -331,6 +354,32 @@ DISTRIBUTIONS
       constant 0
       perl 5.006
       strict 0
+  DateTime-Format-Flexible-0.32
+    pathname: T/TH/THINC/DateTime-Format-Flexible-0.32.tar.gz
+    provides:
+      DateTime::Format::Flexible 0.32
+      DateTime::Format::Flexible::lang undef
+      DateTime::Format::Flexible::lang::de undef
+      DateTime::Format::Flexible::lang::en undef
+      DateTime::Format::Flexible::lang::es undef
+    requirements:
+      DateTime 0
+      DateTime::Format::Builder 0.74
+      DateTime::TimeZone 0
+      ExtUtils::MakeMaker 0
+      List::MoreUtils 0
+      Module::Pluggable 0
+  DateTime-Format-ICal-0.09
+    pathname: D/DR/DROLSKY/DateTime-Format-ICal-0.09.tar.gz
+    provides:
+      DateTime::Format::ICal 0.09
+    requirements:
+      DateTime 0.17
+      DateTime::Event::ICal 0.03
+      DateTime::Set 0.1
+      DateTime::TimeZone 0.22
+      Module::Build 0
+      Params::Validate 0.59
   DateTime-Format-ISO8601-0.08
     pathname: J/JH/JHOBLITT/DateTime-Format-ISO8601-0.08.tar.gz
     provides:
@@ -338,6 +387,44 @@ DISTRIBUTIONS
     requirements:
       DateTime 0.18
       DateTime::Format::Builder 0.77
+  DateTime-Format-Natural-1.08
+    pathname: S/SC/SCHUBIGER/DateTime-Format-Natural-1.08.tar.gz
+    provides:
+      DateTime::Format::Natural 1.08
+      DateTime::Format::Natural::Calc 1.44
+      DateTime::Format::Natural::Compat 0.07
+      DateTime::Format::Natural::Duration 0.06
+      DateTime::Format::Natural::Duration::Checks 0.04
+      DateTime::Format::Natural::Expand 0.03
+      DateTime::Format::Natural::Extract 0.11
+      DateTime::Format::Natural::Formatted 0.07
+      DateTime::Format::Natural::Helpers 0.06
+      DateTime::Format::Natural::Lang::Base 1.08
+      DateTime::Format::Natural::Lang::EN 1.66
+      DateTime::Format::Natural::Rewrite 0.06
+      DateTime::Format::Natural::Test 0.10
+      DateTime::Format::Natural::Utils 0.05
+      DateTime::Format::Natural::Wrappers 0.03
+    requirements:
+      Carp 0
+      Clone 0
+      Cwd 0
+      DateTime 0
+      DateTime::TimeZone 0
+      Exporter 0
+      File::Find 0
+      File::Spec 0
+      FindBin 0
+      Getopt::Long 0
+      List::MoreUtils 0
+      Module::Util 0
+      Params::Validate 0
+      Scalar::Util 0
+      Storable 0
+      Term::ReadLine 0
+      Test::MockTime 0
+      Test::More 0
+      boolean 0
   DateTime-Format-Strptime-1.75
     pathname: D/DR/DROLSKY/DateTime-Format-Strptime-1.75.tar.gz
     provides:
@@ -387,6 +474,18 @@ DISTRIBUTIONS
       namespace::autoclean 0.19
       strict 0
       warnings 0
+  DateTime-Set-0.3900
+    pathname: F/FG/FGLOCK/DateTime-Set-0.3900.tar.gz
+    provides:
+      DateTime::Set 0.3900
+      DateTime::Span undef
+      DateTime::SpanSet undef
+      Set::Infinite::_recurrence undef
+    requirements:
+      DateTime 0.12
+      Params::Validate 0
+      Set::Infinite 0.59
+      Test::More 0
   DateTime-TimeZone-2.19
     pathname: D/DR/DROLSKY/DateTime-TimeZone-2.19.tar.gz
     provides:
@@ -782,6 +881,20 @@ DISTRIBUTIONS
       perl 5.008004
       strict 0
       warnings 0
+  DateTimeX-Easy-0.089
+    pathname: R/RO/ROKR/DateTimeX-Easy-0.089.tar.gz
+    provides:
+      DateTimeX::Easy 0.089
+    requirements:
+      Date::Parse 0
+      DateTime 0
+      DateTime::Format::Flexible 0
+      DateTime::Format::ICal 0
+      DateTime::Format::Natural 0
+      ExtUtils::MakeMaker 6.31
+      Scalar::Util 0
+      Test::Most 0
+      Time::Zone 0
   Devel-GlobalDestruction-0.14
     pathname: H/HA/HAARG/Devel-GlobalDestruction-0.14.tar.gz
     provides:
@@ -865,6 +978,16 @@ DISTRIBUTIONS
       base 0
       overload 0
       perl 5.008001
+      strict 0
+      warnings 0
+  Exporter-Lite-0.08
+    pathname: N/NE/NEILB/Exporter-Lite-0.08.tar.gz
+    provides:
+      Exporter::Lite 0.08
+    requirements:
+      Carp 0
+      ExtUtils::MakeMaker 6.3
+      perl 5.006
       strict 0
       warnings 0
   Exporter-Tiny-1.000000
@@ -1512,6 +1635,14 @@ DISTRIBUTIONS
       perl 5.006
       strict 0
       warnings 0
+  Module-Util-1.09
+    pathname: M/MA/MATTLAW/Module-Util-1.09.tar.gz
+    provides:
+      Module::Util 1.09
+    requirements:
+      Module::Build 0.40
+      Test::More 0
+      perl v5.5.3
   Moo-2.003004
     pathname: H/HA/HAARG/Moo-2.003004.tar.gz
     provides:
@@ -2136,6 +2267,43 @@ DISTRIBUTIONS
       perl 5.008
       strict 0
       warnings 0
+  MooseX-Types-DateTime-0.13
+    pathname: E/ET/ETHER/MooseX-Types-DateTime-0.13.tar.gz
+    provides:
+      MooseX::Types::DateTime 0.13
+    requirements:
+      DateTime 0.4302
+      DateTime::Duration 0.4302
+      DateTime::Locale 0.4001
+      DateTime::TimeZone 0.95
+      Module::Build::Tiny 0.034
+      Moose 0.41
+      MooseX::Types 0.30
+      MooseX::Types::Moose 0.30
+      if 0
+      namespace::clean 0.19
+      perl 5.008003
+      strict 0
+      warnings 0
+  MooseX-Types-DateTime-MoreCoercions-0.15
+    pathname: E/ET/ETHER/MooseX-Types-DateTime-MoreCoercions-0.15.tar.gz
+    provides:
+      MooseX::Types::DateTime::MoreCoercions 0.15
+    requirements:
+      DateTime 0.4302
+      DateTime::Duration 0.4302
+      DateTimeX::Easy 0.085
+      Module::Build::Tiny 0.007
+      Moose 0.41
+      MooseX::Types 0.04
+      MooseX::Types::DateTime 0.07
+      MooseX::Types::Moose 0.04
+      Time::Duration::Parse 0.06
+      if 0
+      namespace::clean 0.19
+      perl 5.006
+      strict 0
+      warnings 0
   MooseX-Types-Path-Class-0.09
     pathname: E/ET/ETHER/MooseX-Types-Path-Class-0.09.tar.gz
     provides:
@@ -2505,6 +2673,16 @@ DISTRIBUTIONS
       ExtUtils::MakeMaker 0
       Test::More 0
       perl 5.006001
+  Set-Infinite-0.65
+    pathname: F/FG/FGLOCK/Set-Infinite-0.65.tar.gz
+    provides:
+      Set::Infinite 0.65
+      Set::Infinite::Arithmetic undef
+      Set::Infinite::Basic undef
+    requirements:
+      ExtUtils::MakeMaker 0
+      Test::More 0
+      Time::Local 0
   Specio-0.42
     pathname: D/DR/DROLSKY/Specio-0.42.tar.gz
     provides:
@@ -2851,6 +3029,15 @@ DISTRIBUTIONS
       Try::Tiny 0.07
       strict 0
       warnings 0
+  Test-MockTime-0.17
+    pathname: D/DD/DDICK/Test-MockTime-0.17.tar.gz
+    provides:
+      Test::MockTime 0.17
+    requirements:
+      ExtUtils::MakeMaker 0
+      Test::More 0
+      Time::Local 0
+      Time::Piece 1.08
   Test-Most-0.35
     pathname: O/OV/OVID/Test-Most-0.35.tar.gz
     provides:
@@ -2899,6 +3086,62 @@ DISTRIBUTIONS
       Exporter 0
       ExtUtils::MakeMaker 0
       perl 5.006
+  Time-Duration-Parse-0.15
+    pathname: N/NE/NEILB/Time-Duration-Parse-0.15.tar.gz
+    provides:
+      Time::Duration::Parse 0.15
+    requirements:
+      Carp 0
+      Exporter::Lite 0
+      ExtUtils::MakeMaker 0
+      perl 5.006
+      strict 0
+      warnings 0
+  TimeDate-2.32
+    pathname: A/AT/ATOOMIC/TimeDate-2.32.tar.gz
+    provides:
+      Date::Format 2.24
+      Date::Format::Generic 2.24
+      Date::Language 1.10
+      Date::Language::Afar 0.99
+      Date::Language::Amharic 1.00
+      Date::Language::Austrian 1.01
+      Date::Language::Brazilian 1.01
+      Date::Language::Bulgarian 1.01
+      Date::Language::Chinese 1.00
+      Date::Language::Chinese_GB 1.01
+      Date::Language::Czech 1.01
+      Date::Language::Danish 1.01
+      Date::Language::Dutch 1.02
+      Date::Language::English 1.01
+      Date::Language::Finnish 1.01
+      Date::Language::French 1.04
+      Date::Language::Gedeo 0.99
+      Date::Language::German 1.02
+      Date::Language::Greek 1.00
+      Date::Language::Hungarian 1.01
+      Date::Language::Icelandic 1.01
+      Date::Language::Italian 1.01
+      Date::Language::Norwegian 1.01
+      Date::Language::Occitan 1.04
+      Date::Language::Oromo 0.99
+      Date::Language::Romanian 1.01
+      Date::Language::Russian 1.01
+      Date::Language::Russian_cp1251 1.01
+      Date::Language::Russian_koi8r 1.01
+      Date::Language::Sidama 0.99
+      Date::Language::Somali 0.99
+      Date::Language::Spanish 1.00
+      Date::Language::Swedish 1.01
+      Date::Language::Tigrinya 1.00
+      Date::Language::TigrinyaEritrean 1.00
+      Date::Language::TigrinyaEthiopian 1.00
+      Date::Language::Turkish 1.0
+      Date::Parse 2.32
+      Time::Zone 2.24
+      TimeDate 1.21
+    requirements:
+      ExtUtils::MakeMaker 0
   Try-Tiny-0.30
     pathname: E/ET/ETHER/Try-Tiny-0.30.tar.gz
     provides:
@@ -3158,6 +3401,13 @@ DISTRIBUTIONS
       perl 5.008001
       strict 0
       warnings 0
+  boolean-0.46
+    pathname: I/IN/INGY/boolean-0.46.tar.gz
+    provides:
+      boolean 0.46
+    requirements:
+      ExtUtils::MakeMaker 0
+      perl 5.008001
   indirect-0.38
     pathname: V/VP/VPIT/indirect-0.38.tar.gz
     provides:

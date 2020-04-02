@@ -10,6 +10,7 @@ use App::TogglInvoicer::Task;
 use DateTime;
 use Hash::Ordered;
 use List::Util 'sum';
+use MooseX::Types::DateTime::MoreCoercions qw(DateTime);
 use Math::Currency 'Money';
 use Path::Tiny 'path';
 use Template;
@@ -43,12 +44,21 @@ option hourly_rate => (
     cmd_flag      => 'hourly-rate',
     documentation => q[Your hourly rate]);
 
-parameter month => (
+option since => (
     is            => 'lazy',
-    isa           => 'Str',
-    documentation => q[The YYYY-MM of the month to query in Toggl]);
+    isa           => DateTime,
+    lazy          => 1,
+    coerce        => 1,
+    documentation => 'The ending time for the invoice (default: first day of prev month)'
+);
 
-has [qw(since until)] => (is => 'lazy', isa => 'DateTime');
+option until => (
+    is            => 'lazy',
+    isa           => DateTime,
+    lazy          => 1,
+    coerce        => 1,
+    documentation => 'The ending time for the invoice (default: end of "since" month)'
+);
 
 has client_name => (is => 'lazy', isa => 'Str');
 
@@ -163,10 +173,6 @@ method _build_client_name () {
     return $clients{ $self->client };
 }
 
-method _build_month () {
-    DateTime->today->strftime('%Y-%m');
-}
-
 method _build_toggl_report () {
     my $pages;
     my $page = 0;
@@ -222,15 +228,20 @@ method _build_line_items () {
 }
 
 method _build_since () {
-    my ($year,$month) = split '-', $self->month;
-
-    DateTime->new(year => $year, month => $month);
+    my $datetime = DateTime->now->subtract(months => 1)
+        ->truncate(to => 'month');
 }
 
 method _build_until () {
     my $since = $self->since;
 
-    DateTime->last_day_of_month(year => $since->year, month => $since->month);
+    my $until = DateTime->last_day_of_month(
+        year   => $since->year,
+        month  => $since->month,
+        hour   => 23,
+        minute => 59,
+        second => 59
+    );
 }
 
 method _build_workspace () {
