@@ -1,0 +1,14 @@
+#!/bin/sh
+
+if [ -z "$DOCKER_IMAGE" ]; then
+    DOCKER_IMAGE="mschout/toggl-invoicer:latest"
+fi
+
+repodir=$(git rev-parse --show-toplevel)
+
+if [ ! -d $repodir ]; then
+    echo "Could not determine repository directory"
+    exit 1
+fi
+
+exec docker run -v $repodir:/app --rm -it $DOCKER_IMAGE bash
