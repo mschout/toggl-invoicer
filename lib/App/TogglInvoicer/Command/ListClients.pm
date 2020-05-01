@@ -9,21 +9,11 @@ use WebService::Toggl;
 
 extends 'App::TogglInvoicer::Command';
 
-with 'App::TogglInvoicer::Role::Toggl';
-
 method run() {
-    my @clients = $self->toggl->me->clients->all;
-
-    unless (@clients) {
+    my $table = $self->clients_table or do {
         say 'No available clients';
         return;
-    }
-
-    my $table = Text::Table->new('Id', 'Name', 'Alias');
-
-    for my $client (@clients) {
-        $table->add( $client->id, $client->name, $self->client_aliases->{ $client->id } || '' );
-    }
+    };
 
     say 'Clients';
     say '';

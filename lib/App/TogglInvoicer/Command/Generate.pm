@@ -17,8 +17,6 @@ use Template;
 
 extends 'App::TogglInvoicer::Command';
 
-with 'App::TogglInvoicer::Role::Toggl';
-
 option invoice_number => (
     is            => 'lazy',
     isa           => 'Int',
@@ -84,7 +82,7 @@ method run () {
         return $self->show_workspaces;
     }
 
-    unless (defined $self->client_id) {
+    unless (defined $self->client and defined $self->client_id) {
         return $self->show_clients;
     }
 
@@ -142,9 +140,7 @@ method show_clients () {
     say 'Available clients: ';
     say '';
 
-    for my $client ($self->toggl->me->clients->all) {
-        say join(': ', $client->id, $client->name);
-    }
+    say $self->clients_table;
 
     return;
 }

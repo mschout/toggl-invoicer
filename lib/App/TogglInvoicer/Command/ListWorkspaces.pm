@@ -8,8 +8,6 @@ use WebService::Toggl;
 
 extends 'App::TogglInvoicer::Command';
 
-with 'App::TogglInvoicer::Role::Toggl';
-
 method run() {
     my @workspaces = $self->toggl->me->workspaces->all;
 

@@ -24,6 +24,22 @@ has config => (is => 'lazy', isa => 'HashRef');
 
 has client_aliases => (is => 'lazy', isa => 'HashRef');
 
+has toggl => (is => 'lazy', isa => 'WebService::Toggl');
+
+has toggl_key => (is => 'lazy', isa => 'Str');
+
+method _build_toggl_key () {
+    my $key = $self->config->{toggl}{api_key}
+        or Carp::croak 'toggl.api_key is not set in ', $self->config_file;
+
+    return $key;
+}
+
+method _build_toggl () {
+    require WebService::Toggl;
+    WebService::Toggl->new({api_key => $self->toggl_key});
+}
+
 app_command_name {
     my $command = MooseX::App::Utils::class_to_command(@_);
 
@@ -77,6 +93,20 @@ method _build_client_aliases() {
     }
 
     return \%aliases;
+}
+
+method clients_table() {
+    require Text::Table; # lazy load
+
+    my $table = Text::Table->new('Id', 'Name', 'Alias');
+
+    my @clients = $self->toggl->me->clients->all or return;
+
+    for my $client (@clients) {
+        $table->add( $client->id, $client->name, $self->client_aliases->{ $client->id } || '' );
+    }
+
+    return $table;
 }
 
 method _build_output_dir () {
