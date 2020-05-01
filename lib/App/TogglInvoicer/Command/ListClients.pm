@@ -4,6 +4,7 @@ use MooseX::App::Command;
 use strictures 2;
 
 use App::TogglInvoicer::Boilerplate;
+use Text::Table;
 use WebService::Toggl;
 
 extends 'App::TogglInvoicer::Command';
@@ -18,12 +19,16 @@ method run() {
         return;
     }
 
+    my $table = Text::Table->new('Id', 'Name', 'Alias');
+
+    for my $client (@clients) {
+        $table->add( $client->id, $client->name, $self->client_aliases->{ $client->id } || '' );
+    }
+
     say 'Clients';
     say '';
 
-    for my $client (@clients) {
-        say join(': ', $client->id, $client->name);
-    }
+    say $table;
 
     return;
 }

@@ -35,7 +35,7 @@ option client => (
     is            => 'lazy',
     isa           => 'Maybe[Str]',
     predicate     => 1,
-    documentation => q[The Toggl Client ID]);
+    documentation => q[The Toggl Client ID, or, configured client name from config file]);
 
 option hourly_rate => (
     is            => 'lazy',
@@ -60,6 +60,8 @@ option until => (
     documentation => 'The ending time for the invoice (default: end of "since" month)'
 );
 
+has client_id => (is => 'lazy', isa => 'Int');
+
 has client_name => (is => 'lazy', isa => 'Str');
 
 has line_items => (is => 'lazy', isa => 'ArrayRef[App::TogglInvoicer::LineItem]');
@@ -82,7 +84,7 @@ method run () {
         return $self->show_workspaces;
     }
 
-    unless (defined $self->client) {
+    unless (defined $self->client_id) {
         return $self->show_clients;
     }
 
@@ -91,7 +93,7 @@ method run () {
     my $tt = $self->template;
 
     my $amount_due = Money($self->hourly_rate) * $self->hours;
-    my $client_details = $self->config->{'client '.$self->client} || {};
+    my $client_details = $self->config->{'client '.$self->client_id} || {};
 
     my %vars = (
         personal       => $self->config->{personal},
@@ -165,12 +167,33 @@ method _combine_tasks ($tasklist) {
     return $tasks->values;
 }
 
-method _build_client_name () {
-    my %clients = map { $_->id => $_->name } $self->toggl->me->clients->all;
-
+method _build_client_id () {
     my $client = $self->client;
 
-    return $clients{ $self->client };
+    if ($self->client =~ /[^0-9]/) {
+        # client is not an integer, try to look it up in the config by name.
+        my %aliases = $self->client_aliases->%*;
+
+        while (my ($id, $name) = each %aliases) {
+            if ($name eq $self->client) {
+                return $id;
+            }
+        }
+
+        Carp::croak "Could not determine client id for client ", $self->client;
+    }
+    else {
+        # client looks like an id
+        return $self->client;
+    }
+}
+
+method _build_client_name () {
+    my $client = $self->client_id;
+
+    my %clients = map { $_->id => $_->name } $self->toggl->me->clients->all;
+
+    return $clients{ $self->client_id };
 }
 
 method _build_toggl_report () {

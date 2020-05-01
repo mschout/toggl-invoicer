@@ -22,6 +22,8 @@ has [qw(config_file top_dir output_dir)] => (is => 'lazy', isa => 'Str');
 
 has config => (is => 'lazy', isa => 'HashRef');
 
+has client_aliases => (is => 'lazy', isa => 'HashRef');
+
 app_command_name {
     my $command = MooseX::App::Utils::class_to_command(@_);
 
@@ -59,6 +61,22 @@ method _build_config () {
 
 method _build_client () {
     $self->config->{toggl}{client};
+}
+
+method _build_client_aliases() {
+    my %aliases;
+
+    for my $key (grep { /^client / } keys $self->config->%*) {
+        my (undef, $id) = split /\s+/, $key;
+
+        my $section = $self->config->{$key};
+
+        if (defined $section->{name}) {
+            $aliases{$id} = $section->{name};
+        }
+    }
+
+    return \%aliases;
 }
 
 method _build_output_dir () {
