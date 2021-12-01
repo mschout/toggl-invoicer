@@ -37,7 +37,11 @@ method _build_toggl_key () {
 
 method _build_toggl () {
     require WebService::Toggl;
-    WebService::Toggl->new({api_key => $self->toggl_key});
+
+    WebService::Toggl->new({
+        api_key => $self->toggl_key,
+        server  => 'https://api.track.toggl.com',
+    });
 }
 
 app_command_name {
