@@ -44,3 +44,5 @@ vendor/cache/
 *.dpth
 *.md5
 *.auxlock
+
+.idea/
