@@ -11,8 +11,8 @@ use LaTeX::Driver;
 extends 'App::TogglInvoicer::Command';
 
 parameter invoice_number => (
-    is            => 'ro',
-    isa           => 'Int',
+    is            => 'rw',
+    isa           => 'Str',
     required      => 1,
     cmd_flag      => 'invoice-number',
     documentation => q[The invoice number of the invoice to compile]);
@@ -20,6 +20,14 @@ parameter invoice_number => (
 has invoice_file => (is => 'lazy', isa => 'Path::Tiny');
 
 has output_file => (is => 'lazy', isa => 'Str');
+
+method BUILD (@args) {
+    # If invoice number is the .tex file name, drop .tex
+    my $invoice_number = $self->invoice_number;
+    if ($invoice_number =~ /\.tex$/) {
+        $self->invoice_number($invoice_number =~ s/\.tex$//r);
+    }
+}
 
 method run () {
     my $source = $self->invoice_file->slurp_utf8;
