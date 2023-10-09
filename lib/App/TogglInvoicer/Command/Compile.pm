@@ -38,7 +38,7 @@ method run () {
         texinputs => path($self->top_dir)->absolute->stringify,
         format    => 'pdf');
 
-    # We need tor use xelatex
+    # We need to use xelatex
     $driver->program_path('/usr/bin/xelatex');
 
     $driver->run;
