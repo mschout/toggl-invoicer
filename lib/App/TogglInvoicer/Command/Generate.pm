@@ -207,14 +207,24 @@ method _build_toggl_report () {
             until        => $self->until,
             page         => $page});
 
-        push @report, $current_page->data->@*;
+        if (defined $current_page->data) {
+          push @report, $current_page->data->@*;
+        }
 
-        $pages //= POSIX::ceil($current_page->total_count / $current_page->per_page);
+        $pages //= _make_page_count($current_page);
     } until ($page == $pages);
 
     # Toggl API has a order_desc parameter to specify the ordering, but
     # WebService::Toggl does not support it.  work around by sorting manually
     return [sort { $a->{start} cmp $b->{start} } @report];
+}
+
+fun _make_page_count ($report_details_page) {
+    unless (defined $report_details_page && defined $report_details_page->per_page) {
+        return 1;
+    }
+
+    return POSIX::ceil($report_details_page->total_count / $report_details_page->per_page);
 }
 
 method _build_line_items () {
