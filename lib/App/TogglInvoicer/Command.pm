@@ -29,6 +29,10 @@ has toggl => (is => 'lazy', isa => 'WebService::Toggl');
 has toggl_key => (is => 'lazy', isa => 'Str');
 
 method _build_toggl_key () {
+    if (defined $ENV{TOGGL_API_KEY}) {
+        return $ENV{TOGGL_API_KEY};
+    }
+
     my $key = $self->config->{toggl}{api_key}
         or Carp::croak 'toggl.api_key is not set in ', $self->config_file;
 
