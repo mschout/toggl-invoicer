@@ -4115,53 +4115,6 @@ DISTRIBUTIONS
       Want 0.29
     requirements:
       ExtUtils::MakeMaker 0
-  WebService-Toggl-0.11
-    pathname: F/FE/FELLIOTT/WebService-Toggl-0.11.tar.gz
-    provides:
-      WebService::Toggl 0.11
-      WebService::Toggl::API::Client undef
-      WebService::Toggl::API::Clients undef
-      WebService::Toggl::API::Me undef
-      WebService::Toggl::API::Project undef
-      WebService::Toggl::API::ProjectUser undef
-      WebService::Toggl::API::ProjectUsers undef
-      WebService::Toggl::API::Projects undef
-      WebService::Toggl::API::Tag undef
-      WebService::Toggl::API::Tags undef
-      WebService::Toggl::API::Task undef
-      WebService::Toggl::API::Tasks undef
-      WebService::Toggl::API::TimeEntries undef
-      WebService::Toggl::API::TimeEntry undef
-      WebService::Toggl::API::User undef
-      WebService::Toggl::API::Users undef
-      WebService::Toggl::API::Workspace undef
-      WebService::Toggl::API::WorkspaceUser undef
-      WebService::Toggl::API::WorkspaceUsers undef
-      WebService::Toggl::API::Workspaces undef
-      WebService::Toggl::Report::Details undef
-      WebService::Toggl::Report::Summary undef
-      WebService::Toggl::Report::Weekly undef
-      WebService::Toggl::Request undef
-      WebService::Toggl::Role::API undef
-      WebService::Toggl::Role::Base undef
-      WebService::Toggl::Role::Item undef
-      WebService::Toggl::Role::Report undef
-      WebService::Toggl::Role::Set undef
-    requirements:
-      DateTime 0
-      HTTP::Tiny 0
-      MIME::Base64 0
-      Module::Build::Tiny 0.035
-      Module::Runtime 0
-      Moo 0
-      Package::Variant 0
-      Role::REST::Client 0
-      Storable 0
-      Sub::Quote 0
-      Types::Standard 0
-      URI::Escape 0
-      namespace::clean 0
-      perl 5.008001
   XString-0.005
     pathname: A/AT/ATOOMIC/XString-0.005.tar.gz
     provides:

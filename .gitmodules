@@ -1,0 +1,3 @@
+[submodule "vendor/cpan/WebService-Toggl"]
+	path = vendor/cpan/WebService-Toggl
+	url = https://github.com/slobo/WebService-Toggl

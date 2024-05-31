@@ -27,7 +27,20 @@ COPY cpanfile.snapshot /app/cpanfile.snapshot
 COPY vendor /app/vendor
 WORKDIR /app
 ENV PERL5LIB /app/local/lib/perl5
-RUN ./vendor/bin/carton install && rm -rf $HOME/.cpanm && rm -rf vendor
+
+# Appent WebService::Toggl's deps to the end of cpanfile
+RUN cat ./vendor/cpan/WebService-Toggl/cpanfile >> cpanfile
+
+RUN ./vendor/bin/carton install && rm -rf $HOME/.cpanm
+
+# install slobo's forked WebService::Toggl which works with v9
+RUN cd ./vendor/cpan/WebService-Toggl \
+  && perl Build.PL \
+  && ./Build build \
+  && ./Build install --install_base=/app/local
+
+RUN rm -rf /app/local/cache
+RUN rm -rf /app/vendor
 
 ## Final image layer
 FROM base-image

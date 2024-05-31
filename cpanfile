@@ -24,5 +24,4 @@ requires 'Template', '2.27';
 requires 'Template::Plugin::Latex', '3.12';
 requires 'Template::Plugin::Number::Format', 0;
 requires 'Text::Table', 0;
-requires 'WebService::Toggl', '0.11';
 requires 'strictures', '2';
