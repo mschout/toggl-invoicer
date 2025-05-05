@@ -26,7 +26,7 @@ COPY cpanfile /app/cpanfile
 COPY cpanfile.snapshot /app/cpanfile.snapshot
 COPY vendor /app/vendor
 WORKDIR /app
-ENV PERL5LIB /app/local/lib/perl5
+ENV PERL5LIB=/app/local/lib/perl5
 
 # Appent WebService::Toggl's deps to the end of cpanfile
 RUN cat ./vendor/cpan/WebService-Toggl/cpanfile >> cpanfile
@@ -48,6 +48,6 @@ FROM base-image
 COPY --from=carton /app/local /app/local
 
 WORKDIR /app
-ENV PERL5LIB /app/local/lib/perl5
+ENV PERL5LIB=/app/local/lib/perl5
 
 COPY . /app

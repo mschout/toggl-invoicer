@@ -80,6 +80,13 @@ The path where invoices will ge stored.
 toggl-invoicer generate
 ```
 
+You can also generate the PDF file at the same time by passing the `--compile`
+command line argument:
+
+```
+toggle-invoicer generate --compile
+```
+
 ### Generate a new invoice for a specific month
 
 You can generate an invoice for a specific month using YYYY-MM syntax to
