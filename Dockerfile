@@ -1,4 +1,4 @@
-FROM perl:5.36-slim-bookworm AS base-image
+FROM perl:5.40-slim-bookworm AS base-image
 
 # Install extra packages needed in final image
 RUN apt-get update \
