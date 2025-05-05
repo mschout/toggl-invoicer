@@ -10,6 +10,8 @@ use LaTeX::Driver;
 
 extends 'App::TogglInvoicer::Command';
 
+with 'App::TogglInvoicer::Role::Compiler';
+
 parameter invoice_number => (
     is            => 'rw',
     isa           => 'Str',
@@ -32,16 +34,10 @@ method BUILD (@args) {
 method run () {
     my $source = $self->invoice_file->slurp_utf8;
 
-    my $driver = LaTeX::Driver->new(
-        source    => \$source,
-        output    => $self->output_file,
-        texinputs => path($self->top_dir)->absolute->stringify,
-        format    => 'pdf');
-
-    # We need to use xelatex
-    $driver->program_path('/usr/bin/xelatex');
-
-    $driver->run;
+    $self->compile_invoice(
+      source_content => $source,
+      output_file    => $self->output_file,
+    );
 }
 
 method _build_invoice_file () {

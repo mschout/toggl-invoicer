@@ -17,6 +17,14 @@ use Template;
 
 extends 'App::TogglInvoicer::Command';
 
+with 'App::TogglInvoicer::Role::Compiler';
+
+option compile => (
+  is            => 'ro',
+  isa           => 'Bool',
+  documentation => q[Compile the invoice after generating it],
+);
+
 option invoice_number => (
     is            => 'lazy',
     isa           => 'Int',
@@ -116,6 +124,18 @@ method run () {
         or Carp::croak $self->template->error;
 
     say 'Invoice ', $self->invoice_number, ' saved in ', $out;
+
+    if ($self->compile) {
+        # Also compile the invoice.
+        my $pdf_file = $out =~ s/\.tex$/.pdf/r;
+
+        $self->compile_invoice(
+            source_content => path($out)->slurp_utf8,
+            output_file    => $pdf_file,
+        );
+
+        say 'Invoice ', $self->invoice_number, ' compiled to ', $pdf_file;
+    }
 }
 
 method show_workspaces () {
