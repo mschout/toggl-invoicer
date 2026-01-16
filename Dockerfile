@@ -1,10 +1,11 @@
-FROM perl:5.40-slim-bookworm AS base-image
+FROM perl:5.42-slim-trixie AS base-image
 
 # Install extra packages needed in final image
 RUN apt-get update \
     && apt-get install -y \
         openssl \
         texlive-latex-base \
+        texlive-lang-greek \
         texlive-xetex \
     && rm -rf /var/apt/lists/* /var/apt/cache/*
 
@@ -28,7 +29,7 @@ COPY vendor /app/vendor
 WORKDIR /app
 ENV PERL5LIB=/app/local/lib/perl5
 
-# Appent WebService::Toggl's deps to the end of cpanfile
+# Append WebService::Toggl's deps to the end of cpanfile
 RUN cat ./vendor/cpan/WebService-Toggl/cpanfile >> cpanfile
 
 RUN ./vendor/bin/carton install && rm -rf $HOME/.cpanm
