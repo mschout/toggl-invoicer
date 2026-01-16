@@ -18,6 +18,14 @@ option invoice_dir => (
     documentation => q[The output directory for invoices. ] .
                      q[Invoices will be stored in a YYYY/YYYYNNN.ext format under this directory]);
 
+option year => (
+    is            => 'ro',
+    isa           => 'Str',
+    lazy          => 1,
+    documentation => q[Year for thie invoice.  Used as part of the output filename.  Defaults to current year.],
+    default       => sub { 1900 + (localtime)[5] },
+);
+
 has [qw(config_file top_dir output_dir)] => (is => 'lazy', isa => 'Str');
 
 has config => (is => 'lazy', isa => 'HashRef');
@@ -118,9 +126,7 @@ method clients_table() {
 }
 
 method _build_output_dir () {
-    my $year = 1900 + (localtime)[5];
-
-    my $path = path($self->invoice_dir)->child($year);
+    my $path = path($self->invoice_dir)->child($self->year);
 
     unless (-d $path) {
         mkpath $path;
